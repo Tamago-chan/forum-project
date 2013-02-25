@@ -1,18 +1,20 @@
 <?php
 
-$config = array(
-		"db" => array(
-				"default" => array(
-						"dbname" => "",
-						"username" => "",
-						"password" => "",
-						"host" => ""
-						)
-				)
-		);
+class Config {
 
-/*
- Error reporting.
-*/
-ini_set("error_reporting", "true");
-error_reporting(E_ALL|E_STRCT);
+	private $db = array(
+			"default" => array(
+					"name" => "forum-project",
+					"user" => "root",
+					"pass" => "",
+					"host" => "localhost",
+			)
+	);
+
+	static public function get_property($property) {
+		if (property_exists($this, $property)) {
+			return $this->$property;
+		}
+
+	}
+}
