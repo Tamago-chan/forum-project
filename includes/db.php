@@ -29,41 +29,41 @@ class DB {
 	}
 
 	function create($data, $table) {
-		
+
 		foreach ($data as $key => $value) {
 			$data[':'.$key] = $value;
 			unset($data[$key]);
 		}
-		
+
 		try {
 			$sth = $dbh->prepare('INSERT INTO someTable VALUES(' . implode(',', array_keys($data)) . ')');
 			foreach ($data as $key => $value) {
 				$sth->bindParam($key, $value);
 			}
 			$sth->execute();
-			
+				
 			return $sth->rowCount();
-			
+				
 		} catch(PDOException $e) {
 			echo 'ERROR: ' . __LINE__ . $e->getMessage();
 		}
 
 	}
-	
+
 	function update($id, $data, $table) {
-		
+
 		foreach ($data as $key => $value) {
 			$set[] = $key . ' = :'. $key;
 			$data[':'.$key] = $value;
 			unset($data[$key]);
 		}
-		
+
 		foreach ($id as $key => $value) {
 			$where[] = $key . ' = :'. $key;
 			$id[':'.$key] = $value;
 			unset($id[$key]);
 		}
-		
+
 		try {
 			$sth = $pdo->prepare('UPDATE someTable SET ' . implode(',', $set) . ' WHERE ' . implode(',', $where));
 			$data += $id;
@@ -71,53 +71,53 @@ class DB {
 				$sth->bindParam($key, $value);
 			}
 			$sth->execute();
-				
+
 			return $sth->rowCount();
-				
+
 		} catch(PDOException $e) {
 			echo 'ERROR: ' . __LINE__ . $e->getMessage();
 		}
 	}
-	
+
 	function delete($data, $table) {
-	
+
 		foreach ($data as $key => $value) {
 			$where[] = $key . ' = :'. $key;
 			$data[':'.$key] = $value;
 			unset($data[$key]);
 		}
-		
+
 		try {
 			$sth = $pdo->prepare('DELETE FROM ' . $table . ' WHERE ' . implode(',', $where));
 			foreach ($data as $key => $value) {
 				$sth->bindParam($key, $value);
 			}
 			$sth->execute();
-				
+
 			return $sth->rowCount();
-				
+
 		} catch(PDOException $e) {
 			echo 'ERROR: ' . __LINE__ . $e->getMessage();
 		}
 	}
-	
+
 	function read($data, $table) {
-		
+
 		foreach ($data as $key => $value) {
 			$where[] = $key . ' = :'. $key;
 			$data[':'.$key] = $value;
 			unset($data[$key]);
 		}
-		
+
 		try {
 			$sth = $pdo->prepare('SELECT * FROM ' . $table . ' WHERE ' . implode(',', $where));
 			foreach ($data as $key => $value) {
 				$sth->bindParam($key, $value);
 			}
 			$sth->execute();
-			
+				
 			return $sth->fetchAll();
-		
+
 		} catch(PDOException $e) {
 			echo 'ERROR: ' . __LINE__ . $e->getMessage();
 		}
