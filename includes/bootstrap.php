@@ -1,5 +1,6 @@
 <?php
+
 include 'config.php';
+include 'db.php';
 
-var_dump(Config::get_property('db'));
-
+Config::set_property('db', include_once 'configs/config-db.php');
