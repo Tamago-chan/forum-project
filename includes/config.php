@@ -2,19 +2,22 @@
 
 class Config {
 
-	private $db = array(
-			"default" => array(
-					"name" => "forum-project",
-					"user" => "root",
-					"pass" => "",
-					"host" => "localhost",
-			)
-	);
+	static private $config = array();
 
-	static public function get_property($property) {
-		if (property_exists($this, $property)) {
-			return $this->$property;
-		}
+	static public function get_property($name, $subname = NULL) {
+	
+            if ($subname === NULL) {
+                return self::$config[$name];
+            }
+            else {
+                return self::$config[$name][$subname];
+            }
+
+	}
+
+	static public function set_property($name, $value) {
+		
+		self::$config[$name] = $value;
 
 	}
 }
